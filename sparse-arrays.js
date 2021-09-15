@@ -1,25 +1,25 @@
-'use strict';
+"use strict";
 
-const fs = require('fs');
+const fs = require("fs");
 
 process.stdin.resume();
-process.stdin.setEncoding('utf-8');
+process.stdin.setEncoding("utf-8");
 
-let inputString = '';
+let inputString = "";
 let currentLine = 0;
 
-process.stdin.on('data', function(inputStdin) {
-    inputString += inputStdin;
+process.stdin.on("data", function (inputStdin) {
+  inputString += inputStdin;
 });
 
-process.stdin.on('end', function() {
-    inputString = inputString.split('\n');
+process.stdin.on("end", function () {
+  inputString = inputString.split("\n");
 
-    main();
+  main();
 });
 
 function readLine() {
-    return inputString[currentLine++];
+  return inputString[currentLine++];
 }
 
 /*
@@ -32,42 +32,55 @@ function readLine() {
  */
 
 function matchingStrings(strings, queries) {
-    let res = queries.map(e => 0);
-    
-    for (let i in queries) {
-        strings.forEach(s => {
-            if(queries[i] == s)
-                res[i]++
-        })
-    }
-    
-    return res;
+  // O(n^2)
+  // let res = queries.map(e => 0);
+
+  // for (let i in queries) {
+  //     strings.forEach(s => {
+  //         if(queries[i] == s)
+  //             res[i]++
+  //     })
+  // }
+
+  // return res;
+
+  // O(n)
+  var result = [];
+  let counts = {};
+
+  for (const str of strings) counts[str] = counts[str] ? counts[str] + 1 : 1;
+
+  for (var i = 0; i < queries.length; i++)
+    if (counts.hasOwnProperty(queries[i])) result.push(counts[queries[i]]);
+    else result.push(0);
+
+  return result;
 }
 
 function main() {
-    const ws = fs.createWriteStream(process.env.OUTPUT_PATH);
+  const ws = fs.createWriteStream(process.env.OUTPUT_PATH);
 
-    const stringsCount = parseInt(readLine().trim(), 10);
+  const stringsCount = parseInt(readLine().trim(), 10);
 
-    let strings = [];
+  let strings = [];
 
-    for (let i = 0; i < stringsCount; i++) {
-        const stringsItem = readLine();
-        strings.push(stringsItem);
-    }
+  for (let i = 0; i < stringsCount; i++) {
+    const stringsItem = readLine();
+    strings.push(stringsItem);
+  }
 
-    const queriesCount = parseInt(readLine().trim(), 10);
+  const queriesCount = parseInt(readLine().trim(), 10);
 
-    let queries = [];
+  let queries = [];
 
-    for (let i = 0; i < queriesCount; i++) {
-        const queriesItem = readLine();
-        queries.push(queriesItem);
-    }
+  for (let i = 0; i < queriesCount; i++) {
+    const queriesItem = readLine();
+    queries.push(queriesItem);
+  }
 
-    const res = matchingStrings(strings, queries);
+  const res = matchingStrings(strings, queries);
 
-    ws.write(res.join('\n') + '\n');
+  ws.write(res.join("\n") + "\n");
 
-    ws.end();
+  ws.end();
 }
