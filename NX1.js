@@ -33,7 +33,7 @@ function solution(A) {
     return Math.min(...sol);
 }
 
-console.log(solution([1,0,1,0,1,1]));
-console.log(solution([1,1,0,1,1]));
-console.log(solution([0,1,0]));
-console.log(solution([0,1,1,0]));
+console.log(solution([1,0,1,0,1,1])); // 1
+console.log(solution([1,1,0,1,1])); // 2
+console.log(solution([0,1,0])); // 0
+console.log(solution([0,1,1,0])); // 2
